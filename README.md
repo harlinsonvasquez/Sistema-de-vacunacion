@@ -1,5 +1,5 @@
 # Sistema-de-vacunacion
-# Sistema de Vacunación
+
 
 ## Descripción
 El **Sistema de Vacunación** es una aplicación web diseñada para gestionar la administración de vacunas a niños en diferentes municipios. Este sistema permite registrar, actualizar y consultar información sobre niños y las vacunas que han recibido, así como gestionar municipios y departamentos asociados. Además, incluye un sistema de manejo de excepciones personalizadas para garantizar un manejo adecuado de los errores.

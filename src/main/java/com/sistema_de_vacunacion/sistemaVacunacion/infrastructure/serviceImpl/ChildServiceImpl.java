@@ -68,9 +68,6 @@ public class ChildServiceImpl  implements IChildService {
     }
 
     @Override
-    public void delete(Long id) {
-    }
-    @Override
     public ResponseData deleteChildren(Long id) throws CustomValidationException {
         Child child = childRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.CHILD_NOT_FOUND.getMessage()));

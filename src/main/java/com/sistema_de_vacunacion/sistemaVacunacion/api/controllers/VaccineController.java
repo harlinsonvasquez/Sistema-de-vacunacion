@@ -1,10 +1,12 @@
 package com.sistema_de_vacunacion.sistemaVacunacion.api.controllers;
 
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.VaccineRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.VaccineResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IVaccineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,19 +22,16 @@ public class VaccineController {
         return vaccineService.create(request);
     }
 
-    // Actualizar una vacuna existente
     @PutMapping("/{id}")
     public VaccineResponse updateVaccine(@PathVariable Long id, @RequestBody VaccineRequest request) {
         return vaccineService.update(id, request);
     }
 
-    // Eliminar una vacuna por ID
-    @DeleteMapping("/{id}")
-    public void deleteVaccine(@PathVariable Long id) {
-        vaccineService.delete(id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseData> deleteVaccine(@PathVariable Long id) {
+        return ResponseEntity.ok(vaccineService.deleteVaccine(id));
     }
 
-    // Obtener todas las vacunas con paginación
     @GetMapping
     public Page<VaccineResponse> getAllVaccines(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "10") int size) {

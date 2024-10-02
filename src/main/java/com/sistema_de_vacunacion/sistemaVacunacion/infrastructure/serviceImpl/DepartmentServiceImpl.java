@@ -2,9 +2,16 @@ package com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.serviceImpl;
 
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.DepartmentRequest;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.DepartmentResponse;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Child;
 import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Department;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.exceptions.CustomValidationException;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.exceptions.ResourceNotFoundException;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IDepartmentService;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.repositories.DepartmentRepository;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.ErrorMessagesEnum;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.SuccessCodesEnum;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.SuccessMessagesEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,15 +34,24 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @Override
     public DepartmentResponse update(Long id, DepartmentRequest request) {
         Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.DEPARTMENT_NOT_FOUND.getMessage()));
         department.setName(request.getName());
         Department updatedDepartment = departmentRepository.save(department);
         return convertToDepartmentResponse(updatedDepartment);
     }
 
     @Override
-    public void delete(Long id) {
-        departmentRepository.deleteById(id);
+    public ResponseData deleteDepartment(Long id) throws CustomValidationException {
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.DEPARTMENT_NOT_FOUND.getMessage()));
+
+        departmentRepository.delete(department);
+
+        return new ResponseData(
+                SuccessCodesEnum.SUCCESS_CODE.getMessage(),
+                SuccessMessagesEnum.STATUS_OK.getMessage(),
+                SuccessMessagesEnum.SUCCESSFULLY_DELETED.getMessage()
+        );
     }
 
     @Override
@@ -50,4 +66,6 @@ public class DepartmentServiceImpl implements IDepartmentService {
         response.setName(department.getName());
         return response;
     }
+
+
 }

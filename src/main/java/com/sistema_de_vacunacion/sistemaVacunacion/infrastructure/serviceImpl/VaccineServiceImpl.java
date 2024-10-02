@@ -1,10 +1,17 @@
 package com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.serviceImpl;
 
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.VaccineRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.VaccineResponse;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Child;
 import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Vaccine;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.exceptions.CustomValidationException;
+import com.sistema_de_vacunacion.sistemaVacunacion.domain.exceptions.ResourceNotFoundException;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IVaccineService;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.repositories.VaccineRepository;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.ErrorMessagesEnum;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.SuccessCodesEnum;
+import com.sistema_de_vacunacion.sistemaVacunacion.utils.enums.SuccessMessagesEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +34,7 @@ public class VaccineServiceImpl implements IVaccineService {
     @Override
     public VaccineResponse update(Long id, VaccineRequest request) {
         Vaccine vaccine = vaccineRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vaccine not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.VACCINE_NOT_FOUND.getMessage()));
         vaccine.setName(request.getName());
         vaccine.setMaxAge(request.getMaxAge());
         Vaccine updatedVaccine = vaccineRepository.save(vaccine);
@@ -35,8 +42,17 @@ public class VaccineServiceImpl implements IVaccineService {
     }
 
     @Override
-    public void delete(Long id) {
-        vaccineRepository.deleteById(id);
+    public ResponseData deleteVaccine(Long id) throws CustomValidationException {
+        Vaccine vaccine = vaccineRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.VACCINE_NOT_FOUND.getMessage()));
+
+        vaccineRepository.delete(vaccine);
+
+        return new ResponseData(
+                SuccessCodesEnum.SUCCESS_CODE.getMessage(),
+                SuccessMessagesEnum.STATUS_OK.getMessage(),
+                SuccessMessagesEnum.SUCCESSFULLY_DELETED.getMessage()
+        );
     }
 
     @Override
@@ -52,4 +68,5 @@ public class VaccineServiceImpl implements IVaccineService {
         response.setMaxAge(vaccine.getMaxAge());
         return response;
     }
+
 }

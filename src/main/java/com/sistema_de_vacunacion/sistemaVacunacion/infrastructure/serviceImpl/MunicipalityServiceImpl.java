@@ -1,6 +1,7 @@
 package com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.serviceImpl;
 
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.MunicipalityRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.UpdateMunicipalityRequest;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.MunicipalityResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Child;
@@ -42,10 +43,23 @@ public class MunicipalityServiceImpl implements IMunicipalityService {
     }
 
     @Override
-    public MunicipalityResponse update(Long id, MunicipalityRequest request) {
+    public MunicipalityResponse update(Long aLong, MunicipalityRequest request) {
+        return null;
+    }
+
+    @Override
+    public MunicipalityResponse update(Long id, UpdateMunicipalityRequest request) {
         Municipality municipality = municipalityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.MUNICIPALITY_NOT_FOUND.getMessage()));
+
         municipality.setName(request.getName());
+
+        if (request.getDepartmentId() != null) {
+            Department department = departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.DEPARTMENT_NOT_FOUND.getMessage()));
+            municipality.setDepartment(department);
+        }
+
         Municipality updatedMunicipality = municipalityRepository.save(municipality);
         return convertToMunicipalityResponse(updatedMunicipality);
     }
@@ -75,7 +89,6 @@ public class MunicipalityServiceImpl implements IMunicipalityService {
         List<Municipality> municipalities = municipalityRepository.findByDepartmentId(departmentId);
         return municipalities.stream().map(this::convertToMunicipalityResponse).collect(Collectors.toList());
     }
-
 
     private MunicipalityResponse convertToMunicipalityResponse(Municipality municipality) {
         MunicipalityResponse response = new MunicipalityResponse();

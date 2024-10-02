@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface IChildService extends CrudService<ChildRequest, ChildBasicResponse,Long>{
 
-    public List<ChildBasicResponse> getChildrenByMunicipality(Long municipalityId);
+    List<ChildBasicResponse> getChildrenByMunicipality(Long municipalityId);
 
-    public Double getAverageAgeByMunicipality(Long municipalityId);
+    Double getAverageAgeByMunicipality(Long municipalityId);
 
-    public List<ChildBasicResponse> getVaccinatedChildrenByMunicipality(Long municipalityId);
+    List<ChildBasicResponse> getVaccinatedChildrenByMunicipality(Long municipalityId);
 
-    public ChildResponse applyVaccineToChild(ApplyVaccineRequest request);
+    ChildResponse applyVaccineToChild(ApplyVaccineRequest request);
 
     ResponseData deleteChildren(Long id ) throws CustomValidationException;
 }

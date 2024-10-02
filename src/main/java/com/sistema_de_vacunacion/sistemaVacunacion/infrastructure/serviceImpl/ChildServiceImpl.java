@@ -109,25 +109,30 @@ public class ChildServiceImpl  implements IChildService {
         Child child = childRepository.findById(request.getChildId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.CHILD_NOT_FOUND.getMessage()));
 
-
         Vaccine vaccine = vaccineRepository.findById(request.getVaccineId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.VACCINE_NOT_FOUND.getMessage()));
 
-        int childAge = Period.between(child.getBirthDate(), LocalDate.now()).getYears();
+        int maxAgeInMonths = vaccine.getMaxAge();
 
-        if (childAge > vaccine.getMaxAge()) {
+        int childAgeInMonths = Period.between(child.getBirthDate(), LocalDate.now()).getYears() * 12 +
+                Period.between(child.getBirthDate(), LocalDate.now()).getMonths();
+
+        if (childAgeInMonths > maxAgeInMonths) {
             throw new ResourceNotFoundException(ErrorMessagesEnum.AGE_NOT_PERMITE.getMessage());
         }
 
 
-        if (!child.getVaccines().contains(vaccine)) {
-            child.getVaccines().add(vaccine);
-            childRepository.save(child);
+        boolean alreadyVaccinated = childRepository.existsByChildIdAndVaccineId(request.getChildId(), request.getVaccineId());
+
+        if (alreadyVaccinated) {
+            throw new CustomValidationException(ErrorMessagesEnum.VACCINE_ALREADY_EXISTS.getMessage());
         }
+
+        child.getVaccines().add(vaccine);
+        childRepository.save(child);
 
         return convertToChildResponse(child);
     }
-
 
     private ChildResponse convertToChildResponse(Child child) {
         List<VaccineResponse> vaccineResponses = child.getVaccines().stream()

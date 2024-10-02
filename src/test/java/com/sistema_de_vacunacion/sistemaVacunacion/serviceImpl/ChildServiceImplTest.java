@@ -81,27 +81,24 @@ class ChildServiceImplTest {
         municipality.setId(1L);
         municipality.setName("Municipio Test");
 
-
         Child child = new Child();
         child.setId(1L);
         child.setName("Juan");
-        child.setBirthDate(LocalDate.of(2020, 5, 10));
+        child.setBirthDate(LocalDate.of(2022, 5, 10));
         child.setMunicipality(municipality);
         child.setVaccines(new ArrayList<>());
-
 
         Vaccine vaccine = new Vaccine();
         vaccine.setId(1L);
         vaccine.setName("BCG");
-        vaccine.setMaxAge(5);
 
+        vaccine.setMaxAge(30);
 
         when(childRepository.findById(1L)).thenReturn(Optional.of(child));
         when(vaccineRepository.findById(1L)).thenReturn(Optional.of(vaccine));
-
+        when(childRepository.existsByChildIdAndVaccineId(1L, 1L)).thenReturn(false);
 
         ChildResponse response = childService.applyVaccineToChild(new ApplyVaccineRequest(1L, 1L));
-
 
         assertNotNull(response);
         assertEquals(1, response.getVaccines().size());

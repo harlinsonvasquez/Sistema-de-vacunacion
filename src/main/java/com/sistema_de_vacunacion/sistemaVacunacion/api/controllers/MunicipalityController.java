@@ -1,9 +1,11 @@
 package com.sistema_de_vacunacion.sistemaVacunacion.api.controllers;
 
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.MunicipalityRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.UpdateMunicipalityRequest;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.MunicipalityResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IMunicipalityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,12 @@ public class MunicipalityController {
     private final IMunicipalityService municipalityService;
 
     @PostMapping
-    public MunicipalityResponse createMunicipality(@RequestBody MunicipalityRequest request) {
+    public MunicipalityResponse createMunicipality(@RequestBody @Valid MunicipalityRequest request) {
         return municipalityService.create(request);
     }
 
     @PutMapping("/{id}")
-    public MunicipalityResponse updateMunicipality(@PathVariable Long id, @RequestBody MunicipalityRequest request) {
+    public MunicipalityResponse updateMunicipality(@PathVariable Long id, @RequestBody @Valid UpdateMunicipalityRequest request) {
         return municipalityService.update(id, request);
     }
 

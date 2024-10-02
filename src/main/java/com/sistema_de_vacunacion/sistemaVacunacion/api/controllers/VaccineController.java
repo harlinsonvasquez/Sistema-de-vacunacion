@@ -4,6 +4,7 @@ import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.VaccineReque
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.VaccineResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IVaccineService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,12 @@ public class VaccineController {
     private final IVaccineService vaccineService;
 
     @PostMapping
-    public VaccineResponse createVaccine(@RequestBody VaccineRequest request) {
+    public VaccineResponse createVaccine(@RequestBody @Valid VaccineRequest request) {
         return vaccineService.create(request);
     }
 
     @PutMapping("/{id}")
-    public VaccineResponse updateVaccine(@PathVariable Long id, @RequestBody VaccineRequest request) {
+    public VaccineResponse updateVaccine(@PathVariable Long id, @RequestBody  @Valid VaccineRequest request) {
         return vaccineService.update(id, request);
     }
 

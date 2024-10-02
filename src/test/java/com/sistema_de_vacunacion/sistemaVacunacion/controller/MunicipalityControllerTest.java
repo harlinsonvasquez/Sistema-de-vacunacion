@@ -3,6 +3,7 @@ package com.sistema_de_vacunacion.sistemaVacunacion.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.controllers.MunicipalityController;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.MunicipalityRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.UpdateMunicipalityRequest;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.MunicipalityResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IMunicipalityService;
@@ -47,10 +48,10 @@ class MunicipalityControllerTest {
 
     @Test
     void testUpdateMunicipalitySuccess() throws Exception {
-        MunicipalityRequest request = new MunicipalityRequest("Nuevo Nombre", 1L);
+        UpdateMunicipalityRequest request = new UpdateMunicipalityRequest("Nuevo Nombre", 1L);
         MunicipalityResponse response = new MunicipalityResponse(1L, "Nuevo Nombre", "Departamento Test");
 
-        when(municipalityService.update(any(Long.class), any(MunicipalityRequest.class))).thenReturn(response);
+        when(municipalityService.update(any(Long.class), any(UpdateMunicipalityRequest.class))).thenReturn(response);
 
         mockMvc.perform(put("/api/municipalities/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

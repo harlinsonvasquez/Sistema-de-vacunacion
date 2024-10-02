@@ -6,6 +6,7 @@ import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ChildBasicR
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ChildResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.ResponseData;
 import com.sistema_de_vacunacion.sistemaVacunacion.infrastructure.Iservice.IChildService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ChildController {
 
 
     @PostMapping(path = "/create")
-    public ChildBasicResponse createChild(@RequestBody ChildRequest request) {
+    public ChildBasicResponse createChild(@RequestBody @Valid ChildRequest request) {
         return childService.create(request);
     }
 
@@ -47,7 +48,6 @@ public class ChildController {
         return childService.getChildrenByMunicipality(municipalityId);
     }
 
-
     @GetMapping("/municipality/{municipalityId}/average-age")
     public Double getAverageAgeByMunicipality(@PathVariable Long municipalityId) {
         return childService.getAverageAgeByMunicipality(municipalityId);
@@ -57,8 +57,9 @@ public class ChildController {
     public List<ChildBasicResponse> getVaccinatedChildrenByMunicipality(@PathVariable Long municipalityId) {
         return childService.getVaccinatedChildrenByMunicipality(municipalityId);
     }
+
     @PostMapping(path = "/applyVaccine")
-    public ResponseEntity<ChildResponse> applyVaccine(@RequestBody ApplyVaccineRequest request) {
+    public ResponseEntity<ChildResponse> applyVaccine(@RequestBody @Valid ApplyVaccineRequest request) {
         return ResponseEntity.ok(childService.applyVaccineToChild(request));
     }
 }

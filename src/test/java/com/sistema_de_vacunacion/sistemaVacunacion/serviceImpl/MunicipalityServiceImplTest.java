@@ -1,5 +1,6 @@
 package com.sistema_de_vacunacion.sistemaVacunacion.serviceImpl;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.MunicipalityRequest;
+import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.request.UpdateMunicipalityRequest;
 import com.sistema_de_vacunacion.sistemaVacunacion.api.dtos.response.MunicipalityResponse;
 import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Department;
 import com.sistema_de_vacunacion.sistemaVacunacion.domain.entities.Municipality;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -55,11 +57,17 @@ public class MunicipalityServiceImplTest {
 
     @Test
     void testUpdateMunicipalitySuccess() {
-        MunicipalityRequest request = new MunicipalityRequest("Nuevo Nombre", 1L);
-        Municipality municipality = new Municipality(1L, "Municipio Test", null, null);
+        UpdateMunicipalityRequest request = new UpdateMunicipalityRequest("Nuevo Nombre", 1L);
 
-        when(municipalityRepository.findById(1L)).thenReturn(Optional.of(municipality));
-        when(municipalityRepository.save(any(Municipality.class))).thenReturn(municipality);
+        Municipality existingMunicipality = new Municipality(1L, "Municipio Test", null, null);
+
+        Department department = new Department(1L, "Departamento Test", new ArrayList<>());
+
+        when(municipalityRepository.findById(1L)).thenReturn(Optional.of(existingMunicipality));
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
+
+        Municipality updatedMunicipality = new Municipality(1L, "Nuevo Nombre", department, null);
+        when(municipalityRepository.save(any(Municipality.class))).thenReturn(updatedMunicipality);
 
         MunicipalityResponse response = municipalityService.update(1L, request);
 

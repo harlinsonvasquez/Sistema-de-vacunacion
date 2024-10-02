@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import java.time.Period;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -112,7 +113,7 @@ public class ChildServiceImpl  implements IChildService {
         Vaccine vaccine = vaccineRepository.findById(request.getVaccineId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessagesEnum.VACCINE_NOT_FOUND.getMessage()));
 
-        int childAge = LocalDate.now().getYear() - child.getBirthDate().getYear();
+        int childAge = Period.between(child.getBirthDate(), LocalDate.now()).getYears();
 
         if (childAge > vaccine.getMaxAge()) {
             throw new ResourceNotFoundException(ErrorMessagesEnum.AGE_NOT_PERMITE.getMessage());

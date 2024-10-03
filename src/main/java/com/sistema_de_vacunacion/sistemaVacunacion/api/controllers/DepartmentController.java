@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class DepartmentController {
@@ -36,7 +36,7 @@ public class DepartmentController {
 
     @GetMapping
     public Page<DepartmentResponse> getAllDepartments(@RequestParam(defaultValue = "0") int page,
-                                                      @RequestParam(defaultValue = "10") int size) {
+                                                      @RequestParam(defaultValue = "30") int size) {
         return departmentService.getAll(page, size);
     }
 }

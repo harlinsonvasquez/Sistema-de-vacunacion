@@ -38,14 +38,20 @@ public class MunicipalityController {
 
     @GetMapping
     public Page<MunicipalityResponse> getAllMunicipalities(@RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "30") int size) {
+                                                           @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return municipalityService.getAll(page, size);
     }
 
     @GetMapping("/department/{departmentId}")
     public List<MunicipalityResponse> getMunicipalitiesByDepartment(@PathVariable Long departmentId,
                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(defaultValue = "30") int size) {
+                                                                    @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return municipalityService.getMunicipalitiesByDepartment(departmentId);
     }
 }

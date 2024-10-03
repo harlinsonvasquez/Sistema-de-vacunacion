@@ -118,7 +118,7 @@ public class ChildServiceImpl  implements IChildService {
                 Period.between(child.getBirthDate(), LocalDate.now()).getMonths();
 
         if (childAgeInMonths > maxAgeInMonths) {
-            throw new ResourceNotFoundException(ErrorMessagesEnum.AGE_NOT_PERMITE.getMessage());
+            throw new CustomValidationException(ErrorMessagesEnum.AGE_NOT_PERMITTED.getMessage());
         }
 
 

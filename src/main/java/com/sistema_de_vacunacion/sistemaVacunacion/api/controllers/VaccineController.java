@@ -36,6 +36,9 @@ public class VaccineController {
     @GetMapping
     public Page<VaccineResponse> getAllVaccines(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return vaccineService.getAll(page, size);
     }
 }

@@ -37,6 +37,9 @@ public class DepartmentController {
     @GetMapping
     public Page<DepartmentResponse> getAllDepartments(@RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "30") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return departmentService.getAll(page, size);
     }
 }

@@ -38,7 +38,7 @@ class VaccineControllerTest {
 
         when(vaccineService.create(any(VaccineRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/vaccines")
+        mockMvc.perform(post("/vaccines")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -52,7 +52,7 @@ class VaccineControllerTest {
 
         when(vaccineService.update(any(Long.class), any(VaccineRequest.class))).thenReturn(response);
 
-        mockMvc.perform(put("/api/vaccines/{id}", 1L)
+        mockMvc.perform(put("/vaccines/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -65,7 +65,7 @@ class VaccineControllerTest {
 
         when(vaccineService.deleteVaccine(any(Long.class))).thenReturn(responseData);
 
-        mockMvc.perform(delete("/api/vaccines/delete/{id}", 1L))
+        mockMvc.perform(delete("/vaccines/delete/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Eliminado exitosamente"));
     }

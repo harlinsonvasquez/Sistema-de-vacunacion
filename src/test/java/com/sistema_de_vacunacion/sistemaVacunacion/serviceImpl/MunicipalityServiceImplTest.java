@@ -88,7 +88,8 @@ public class MunicipalityServiceImplTest {
     @Test
     void testGetAllMunicipalities() {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Municipality municipality = new Municipality(1L, "Municipio Test", null, null);
+        Department department = new Department(1L, "Departamento Test", new ArrayList<>());
+        Municipality municipality = new Municipality(1L, "Municipio Test", department, null);
         Page<Municipality> municipalities = new PageImpl<>(Collections.singletonList(municipality));
 
         when(municipalityRepository.findAll(pageRequest)).thenReturn(municipalities);
@@ -96,16 +97,22 @@ public class MunicipalityServiceImplTest {
         Page<MunicipalityResponse> response = municipalityService.getAll(0, 10);
 
         assertEquals(1, response.getTotalElements());
+        assertEquals("Departamento Test", response.getContent().get(0).getDepartmentName());
     }
+
 
     @Test
     void testGetMunicipalitiesByDepartmentSuccess() {
-        Municipality municipality = new Municipality(1L, "Municipio Test", null, null);
+        Department department = new Department(1L, "Departamento Test", new ArrayList<>());
+        Municipality municipality = new Municipality(1L, "Municipio Test", department, null);
+
         when(municipalityRepository.findByDepartmentId(1L)).thenReturn(List.of(municipality));
 
         List<MunicipalityResponse> response = municipalityService.getMunicipalitiesByDepartment(1L);
 
         assertNotNull(response);
         assertEquals(1, response.size());
+        assertEquals("Departamento Test", response.get(0).getDepartmentName());
     }
+
 }

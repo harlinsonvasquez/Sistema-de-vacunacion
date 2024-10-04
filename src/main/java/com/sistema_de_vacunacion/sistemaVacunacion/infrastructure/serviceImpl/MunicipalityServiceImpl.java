@@ -94,6 +94,7 @@ public class MunicipalityServiceImpl implements IMunicipalityService {
         MunicipalityResponse response = new MunicipalityResponse();
         response.setId(municipality.getId());
         response.setName(municipality.getName());
+        response.setDepartmentName(municipality.getDepartment().getName());
         return response;
     }
 }

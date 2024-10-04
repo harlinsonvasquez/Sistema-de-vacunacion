@@ -39,7 +39,7 @@ class MunicipalityControllerTest {
 
         when(municipalityService.create(any(MunicipalityRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/municipalities")
+        mockMvc.perform(post("/municipalities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -53,7 +53,7 @@ class MunicipalityControllerTest {
 
         when(municipalityService.update(any(Long.class), any(UpdateMunicipalityRequest.class))).thenReturn(response);
 
-        mockMvc.perform(put("/api/municipalities/{id}", 1L)
+        mockMvc.perform(put("/municipalities/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -66,7 +66,7 @@ class MunicipalityControllerTest {
 
         when(municipalityService.deleteMunicipality(any(Long.class))).thenReturn(responseData);
 
-        mockMvc.perform(delete("/api/municipalities/delete/{id}", 1L))
+        mockMvc.perform(delete("/municipalities/delete/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Eliminado exitosamente"));
     }

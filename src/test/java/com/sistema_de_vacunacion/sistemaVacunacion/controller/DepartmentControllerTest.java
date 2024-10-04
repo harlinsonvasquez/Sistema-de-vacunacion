@@ -36,7 +36,7 @@ public class DepartmentControllerTest {
 
         when(departmentService.create(any(DepartmentRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/departments")
+        mockMvc.perform(post("/departments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ public class DepartmentControllerTest {
 
         when(departmentService.update(any(Long.class), any(DepartmentRequest.class))).thenReturn(response);
 
-        mockMvc.perform(put("/api/departments/{id}", 1L)
+        mockMvc.perform(put("/departments/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -63,7 +63,7 @@ public class DepartmentControllerTest {
 
         when(departmentService.deleteDepartment(any(Long.class))).thenReturn(responseData);
 
-        mockMvc.perform(delete("/api/departments/delete/{id}", 1L))
+        mockMvc.perform(delete("/departments/delete/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Eliminado exitosamente"));
     }

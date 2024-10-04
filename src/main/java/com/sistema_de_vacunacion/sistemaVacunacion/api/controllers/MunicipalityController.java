@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/municipalities")
+@RequestMapping("/municipalities")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class MunicipalityController {
@@ -39,6 +39,9 @@ public class MunicipalityController {
     @GetMapping
     public Page<MunicipalityResponse> getAllMunicipalities(@RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return municipalityService.getAll(page, size);
     }
 
@@ -46,6 +49,9 @@ public class MunicipalityController {
     public List<MunicipalityResponse> getMunicipalitiesByDepartment(@PathVariable Long departmentId,
                                                                     @RequestParam(defaultValue = "0") int page,
                                                                     @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return municipalityService.getMunicipalitiesByDepartment(departmentId);
     }
 }

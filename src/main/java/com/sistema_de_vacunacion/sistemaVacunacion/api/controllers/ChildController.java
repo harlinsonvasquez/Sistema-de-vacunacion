@@ -40,6 +40,9 @@ public class ChildController {
     @GetMapping(path = "/getAllChildren")
     public Page<ChildBasicResponse> getAllChildren(@RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return childService.getAll(page, size);
     }
 

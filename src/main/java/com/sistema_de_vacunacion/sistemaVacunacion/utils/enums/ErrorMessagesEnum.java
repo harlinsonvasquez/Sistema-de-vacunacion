@@ -6,7 +6,7 @@ public enum ErrorMessagesEnum {
     MUNICIPALITY_NOT_FOUND("Municipio no encontrado"),
     DEPARTMENT_NOT_FOUND("Departamento no encontrado"),
     VACCINE_NOT_FOUND("Vacuna no encontrada"),
-    AGE_NOT_PERMITE("Restriccion de edad no se puede aplicar esta vacuna al niño"),
+    AGE_NOT_PERMITTED("Restriccion de edad no se puede aplicar esta vacuna a la persona"),
     VACCINE_ALREADY_EXISTS("No se puede aplicar la vacuna porque el niño ya la tiene aplicada"),
     FIELD_REQUIRED("Este campo es obligatorio");
 

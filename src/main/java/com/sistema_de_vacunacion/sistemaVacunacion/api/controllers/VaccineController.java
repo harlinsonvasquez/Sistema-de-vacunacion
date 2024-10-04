@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/vaccines")
+@RequestMapping("/vaccines")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class VaccineController {
@@ -36,6 +36,9 @@ public class VaccineController {
     @GetMapping
     public Page<VaccineResponse> getAllVaccines(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            page = 0;
+        }
         return vaccineService.getAll(page, size);
     }
 }
